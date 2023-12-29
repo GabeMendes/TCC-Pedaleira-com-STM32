@@ -1,0 +1,1 @@
+Circuito do Pré-Amplificador
