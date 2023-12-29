@@ -1,0 +1,29 @@
+*
+* Subcircuit library for ECE 412
+* Last updated: 1/6/2011
+*
+* Dr. Vahe Caliskan
+* vahe@uic.edu
+*
+.subckt ideal_oa p m out params: Rin=1e9, Rout=1, A=1e9
+Rin p m {Rin}					; input resistance
+Eout out1 0 value={A*v(p,m)}	; open-loop voltage gain
+Rout out1 out {Rout}			; output resistance
+.ends ideal_oa
+
+.subckt ideal_ota p m out params: Rin=1e9, Rout=1e9, gm=1m
+*Rin p m {Rin}					; input resistance
+Gout 0 out value={gm*v(p,m)}	; transconductance gain
+*Rout out 0 {Rout}			    ; output resistance
+.ends ideal_ota
+
+.subckt oa_ugbw p m out params: Ao=1e5, UGBW=1e6, Rin=1e9, Rout=1u
+.param R1=10k
+Rin p m {Rin}					    ; input resistance
+G1 0 out1 value={(Ao/R1)*v(p,m)}	; open-loop voltage gain
+C1 out1 0 {Ao/(UGBW*2*pi*R1)}     ; output capacitance
+*C1 out1 0 {1/(2*pi*10*R1)}
+R1 out1 0 {R1}
+Eout out2 0 value={v(out1)}
+Rout out2 out {Rout}
+.ends oa_ugbw
